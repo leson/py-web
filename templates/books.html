@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <h1>{{title}}</h1>
+    <table border="1">
+        <tr>
+            <td>#</td>
+            <td>书名</td>
+            <td>单价</td>
+            <td>排行榜</td>
+        </tr>
+        <tr v-for="book in books">
+            <td>{[book.id]}</td>
+            <td>{[book.name]}</td>
+            <td>{[book.price]}</td>
+            <td>{[book.sort]}</td>
+        </tr>
+    </table>
+
+    <script>
+        var app=new Vue({
+            el:"#app",
+            data: {
+                books:[],
+            },
+            delimiters: ["{[","]}"],
+            mounted: function(){
+                this.fetchData();
+            },
+            methods: {
+                fetchData(){
+                    this.$http.get("/api/books").then(resp=>{
+                        this.books=resp.body
+                        console.log(resp.body)
+                    },err=>{console.log("Error")})
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
